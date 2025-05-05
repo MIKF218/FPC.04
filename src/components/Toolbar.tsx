@@ -69,7 +69,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
           className={cn(!isCalculated && "opacity-50 cursor-not-allowed")}
         >
           <Save className="h-4 w-4 mr-1" />
-          Save
+          Save as PDF
         </Button>
         
         <Button variant="default" size="sm" onClick={onCalculate}>
