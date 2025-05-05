@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
@@ -46,26 +45,48 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
 }) => {
   const [visible, setVisible] = useState(false);
 
+  // Initialize the form
+  const form = useForm<FormValues>({
+    defaultValues: {
+      name: '',
+      type: 'operation',
+      distance: '',
+      time: '',
+      valueAdded: '',
+    },
+  });
+
+  // Reset form when modal opens or when editing a different step
   useEffect(() => {
     if (isOpen) {
       setVisible(true);
+      
+      // Reset form with step values if step is provided
+      if (step) {
+        form.reset({
+          name: step.name || '',
+          type: step.type || 'operation',
+          distance: step.distance !== undefined ? step.distance.toString() : '',
+          time: step.time !== undefined ? step.time.toString() : '',
+          valueAdded: step.valueAdded !== undefined ? (step.valueAdded ? 'true' : 'false') : '',
+        });
+      } else {
+        // Reset to defaults for a new step
+        form.reset({
+          name: '',
+          type: 'operation',
+          distance: '',
+          time: '',
+          valueAdded: '',
+        });
+      }
     } else {
       const timer = setTimeout(() => {
         setVisible(false);
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [isOpen]);
-
-  const form = useForm<FormValues>({
-    defaultValues: {
-      name: step?.name || '',
-      type: step?.type || 'operation',
-      distance: step?.distance?.toString() || '',
-      time: step?.time?.toString() || '',
-      valueAdded: step?.valueAdded !== undefined ? (step.valueAdded ? 'true' : 'false') : '',
-    },
-  });
+  }, [isOpen, step, form]);
 
   const handleSubmit = (values: FormValues) => {
     if (!values.valueAdded) {
@@ -125,7 +146,7 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Step Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select type" />
@@ -153,7 +174,7 @@ const ProcessForm: React.FC<ProcessFormProps> = ({
                     <FormControl>
                       <RadioGroup 
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                         className="flex gap-4"
                       >
                         <FormItem className="flex items-center space-x-2 space-y-0">
