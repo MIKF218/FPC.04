@@ -13,7 +13,7 @@ const ProcessStepsEmpty = ({ onAddStep }: ProcessStepsEmptyProps) => (
     <p className="text-muted-foreground mb-4">
       Add steps to your process to begin building your flow chart
     </p>
-    <Button onClick={onAddStep}>
+    <Button onClick={onAddStep} size="lg">
       <Plus className="mr-1 h-4 w-4" />
       Add First Step
     </Button>

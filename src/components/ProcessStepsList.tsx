@@ -26,23 +26,27 @@ const ProcessStepsList: React.FC<ProcessStepsListProps> = ({
   onReorderSteps,
   printRef
 }) => {
+  const hasSteps = steps.length > 0;
+
   return (
     <div className="glass border rounded-xl p-4 mb-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-medium text-lg">Process Steps</h3>
-        <Button
-          variant="outline"
-          size="sm"
-          className="button-hover"
-          onClick={onAddStep}
-        >
-          <Plus className="h-4 w-4 mr-1" />
-          Add Step
-        </Button>
+        {hasSteps && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="button-hover"
+            onClick={onAddStep}
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            Add Step
+          </Button>
+        )}
       </div>
       
       <div className="space-y-1 max-h-[500px] overflow-y-auto p-1" ref={printRef}>
-        {steps.length > 0 ? (
+      {hasSteps ? (
           <>
             <ProcessStepsHeader />
             <ProcessStepsDragList 
